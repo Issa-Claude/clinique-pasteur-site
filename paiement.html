@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paiement électronique — Clinique Pasteur · Djibouti</title>
+<meta name="description" content="Payez votre consultation à distance par D-Money, CAC Pay, WAAFI, EXIM Pay ou Saba Pay. Recevez votre confirmation de RDV et reçu par SMS ou WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+
+/* ═══════════════════════════════════════════
+   HERO SPLIT
+═══════════════════════════════════════════ */
+.pay-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(24px,4vw,64px);
+  align-items: start;
+  padding-block: clamp(48px,8vw,96px);
+}
+@media (max-width: 860px) { .pay-hero { grid-template-columns: 1fr; } }
+
+/* ─ Colonne gauche : RDV + promise ─ */
+.pay-rdv {
+  position: sticky;
+  top: 96px;
+}
+.pay-rdv__promise {
+  background: linear-gradient(135deg, var(--olive) 0%, var(--olive-deep) 100%);
+  border-radius: var(--radius-lg);
+  padding: clamp(28px,4vw,44px);
+  color: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+.pay-rdv__promise::before {
+  content: "";
+  position: absolute;
+  right: -40px; top: -40px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,.3), transparent 70%);
+  pointer-events: none;
+}
+.pay-rdv__promise h2 { color: #fff; font-size: clamp(1.5rem,2.8vw,2.1rem); position: relative; }
+.pay-rdv__promise p  { color: rgba(248,246,240,.85); margin-top:.8rem; font-size:1.05rem; position: relative; }
+
+.no-travel {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+  margin-top: 1.4rem;
+  position: relative;
+}
+.no-travel__icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.no-travel__txt strong { display: block; color: #fff; font-size: 1rem; }
+.no-travel__txt span  { color: rgba(248,246,240,.8); font-size: .9rem; line-height: 1.45; }
+
+.confirm-box {
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: clamp(20px,3vw,32px);
+  margin-top: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: .9rem;
+}
+.confirm-box__title {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: var(--olive-deep);
+  font-weight: 600;
+}
+.confirm-step {
+  display: flex;
+  align-items: flex-start;
+  gap: .8rem;
+}
+.confirm-step__n {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--olive);
+  color: #fff;
+  font-weight: 700;
+  font-size: .85rem;
+  display: grid; place-items: center;
+  flex-shrink: 0;
+}
+.confirm-step__txt { font-size: .93rem; color: var(--ink-soft); line-height: 1.45; }
+.confirm-step__txt strong { color: var(--olive-deep); }
+
+.rdv-btns {
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+  margin-top: 1rem;
+}
+
+/* ─ Colonne droite : plaques paiement ─ */
+.pay-cards-col { display: flex; flex-direction: column; gap: clamp(16px,2vw,24px); }
+
+/* ═══════════════════════════════════════════
+   PLAQUE PAIEMENT — redesign terminal style
+═══════════════════════════════════════════ */
+.plaque {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(69,82,31,.08), 0 1px 3px rgba(44,44,44,.05);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  transition: transform var(--t), box-shadow var(--t);
+}
+.plaque:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(69,82,31,.14), 0 2px 8px rgba(44,44,44,.06);
+}
+
+/* Bande colorée gauche */
+.plaque__stripe {
+  width: 8px;
+  min-height: 100%;
+}
+
+.plaque__body {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 0;
+  align-items: stretch;
+}
+@media (max-width: 480px) {
+  .plaque__body { grid-template-columns: 96px 1fr; }
+}
+
+/* Zone QR */
+.plaque__qr-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 10px;
+  border-right: 1px solid var(--line);
+  background: var(--cream);
+  gap: 6px;
+}
+.plaque__qr {
+  width: 88px;
+  height: 88px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  image-rendering: crisp-edges;
+  display: block;
+}
+@media (max-width: 480px) {
+  .plaque__qr { width: 70px; height: 70px; }
+}
+.plaque__scan-lbl {
+  font-size: .6rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Infos droite */
+.plaque__info {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.plaque__brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.plaque__brand-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.plaque__brand-name {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--olive-deep);
+  line-height: 1;
+}
+.plaque__brand-sub {
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 700;
+  display: block;
+  margin-top: 2px;
+}
+
+.plaque__code-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.plaque__code-val {
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--olive);
+  letter-spacing: .05em;
+  line-height: 1;
+}
+.plaque__code-lbl {
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.plaque__instruction {
+  font-size: .82rem;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+.plaque__instruction strong { color: var(--olive-deep); }
+
+/* ═══════════════════════════════════════════
+   CONFIRMATION BANNER
+═══════════════════════════════════════════ */
+.confirm-banner {
+  background: linear-gradient(135deg, var(--olive-deep) 0%, #2d3d14 100%);
+  border-radius: var(--radius-lg);
+  padding: clamp(28px,4vw,52px);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: clamp(20px,3vw,40px);
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.confirm-banner::after {
+  content: "";
+  position: absolute;
+  right: -60px; bottom: -60px;
+  width: 240px; height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,.25), transparent 70%);
+  pointer-events: none;
+}
+@media (max-width: 720px) { .confirm-banner { grid-template-columns: 1fr; } }
+
+.confirm-banner__step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  position: relative;
+}
+.confirm-banner__step:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  right: -24px; top: 10px;
+  color: rgba(201,168,76,.6);
+  font-size: 1.3rem;
+}
+@media (max-width: 720px) {
+  .confirm-banner__step::after { display: none; }
+}
+.confirm-banner__num {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: rgba(201,168,76,.2);
+  border: 1.5px solid rgba(201,168,76,.5);
+  color: var(--gold);
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: grid; place-items: center;
+  flex-shrink: 0;
+}
+.confirm-banner__txt strong { display: block; color: #fff; font-size: 1rem; margin-bottom: .3rem; }
+.confirm-banner__txt span  { color: rgba(248,246,240,.75); font-size: .88rem; line-height: 1.45; }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Aller au contenu</a>
+
+<!-- ======== HEADER ======== -->
+<header class="site-header">
+  <div class="container">
+    <nav class="nav" data-open="false" aria-label="Navigation principale">
+      <a class="brand" href="index.html" aria-label="Clinique Pasteur — accueil">
+        <img src="images/logo-clinique-pasteur.jpg" alt="Clinique Pasteur" class="brand__logo">
+      </a>
+      <button class="nav__toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <div class="nav__drawer" id="menu">
+        <ul class="nav__links">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="cabinet.html">Le Cabinet</a></li>
+          <li><a href="soins.html">Nos Soins</a></li>
+          <li><a href="medecin.html">Le Médecin</a></li>
+          <li><a href="engagement.html">Engagement</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="paiement.html" aria-current="page">Paiement</a></li>
+        </ul>
+        <div class="nav__cta">
+          <a class="btn btn--primary" href="contact.html">Prendre rendez-vous</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ======== BANNER ======== -->
+  <div class="banner">
+    <div class="container">
+      <div class="banner__inner">
+        <nav class="breadcrumb"><a href="index.html">Accueil</a> &rsaquo; Paiement électronique</nav>
+        <span class="kicker">Payez depuis chez vous</span>
+        <h1>Paiement électronique</h1>
+        <p>Prenez rendez-vous, payez en ligne, recevez votre confirmation.<br>Vous n'êtes pas obligé de vous déplacer pour régler votre consultation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== HERO SPLIT : RDV + PLAQUES ======== -->
+  <section class="section">
+    <div class="container">
+      <div class="pay-hero">
+
+        <!-- ─── COLONNE GAUCHE : RDV + promise ─── -->
+        <div class="pay-rdv">
+
+          <div class="pay-rdv__promise reveal">
+            <h2>Prenez rendez-vous<br>sans vous déplacer</h2>
+            <p>Consultez, réglez et recevez votre confirmation — tout depuis votre téléphone, où que vous soyez à Djibouti.</p>
+
+            <div class="no-travel">
+              <div class="no-travel__icon">📵</div>
+              <div class="no-travel__txt">
+                <strong>Aucun déplacement requis pour payer</strong>
+                <span>Scannez le QR code ou saisissez le code marchand depuis votre application mobile. Le paiement est confirmé en quelques secondes.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="confirm-box reveal">
+            <div class="confirm-box__title">Comment ça se passe ?</div>
+
+            <div class="confirm-step">
+              <div class="confirm-step__n">1</div>
+              <div class="confirm-step__txt"><strong>Vous prenez rendez-vous</strong> par WhatsApp ou formulaire. On confirme le créneau.</div>
+            </div>
+            <div class="confirm-step">
+              <div class="confirm-step__n">2</div>
+              <div class="confirm-step__txt"><strong>Vous payez en ligne</strong> avec l'une des 5 applications ci-contre — depuis chez vous, en 30 secondes.</div>
+            </div>
+            <div class="confirm-step">
+              <div class="confirm-step__n">3</div>
+              <div class="confirm-step__txt"><strong>Vous recevez instantanément</strong> votre confirmation de RDV + reçu de paiement par <strong>SMS ou WhatsApp</strong>.</div>
+            </div>
+            <div class="confirm-step">
+              <div class="confirm-step__n">4</div>
+              <div class="confirm-step__txt"><strong>Vous venez le jour J</strong> uniquement pour votre consultation. Rien d'autre à faire.</div>
+            </div>
+
+            <div class="rdv-btns">
+              <a class="btn btn--primary btn--block" href="https://wa.me/25377081717?text=Bonjour%2C%20je%20souhaite%20prendre%20rendez-vous" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M.06 24l1.7-6.2A11.9 11.9 0 1 1 12 24a12 12 0 0 1-5.74-1.47L.06 24z"/></svg>
+                Prendre RDV sur WhatsApp
+              </a>
+              <a class="btn btn--ghost btn--block" href="contact.html">Formulaire de contact</a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ─── COLONNE DROITE : 5 PLAQUES ─── -->
+        <div class="pay-cards-col">
+
+          <p class="kicker reveal" style="margin-bottom:.4rem;">5 solutions de paiement acceptées</p>
+
+          <!-- D-MONEY -->
+          <div class="plaque reveal">
+            <div class="plaque__stripe" style="background:#E8392A;"></div>
+            <div class="plaque__body">
+              <div class="plaque__qr-zone">
+                <img src="images/paiement/dmoney-qr.jpg" alt="QR Code D-Money" class="plaque__qr">
+                <span class="plaque__scan-lbl">Scanner pour payer</span>
+              </div>
+              <div class="plaque__info">
+                <div class="plaque__brand">
+                  <div class="plaque__brand-dot" style="background:#E8392A;"></div>
+                  <div>
+                    <div class="plaque__brand-name">D-Money</div>
+                    <span class="plaque__brand-sub">Digital Mobile Money</span>
+                  </div>
+                </div>
+                <div class="plaque__code-row">
+                  <div>
+                    <div class="plaque__code-val">3155</div>
+                    <div class="plaque__code-lbl">Code court marchand</div>
+                  </div>
+                </div>
+                <p class="plaque__instruction">Ouvrez D-Money → <strong>Payer</strong> → saisissez <strong>3155</strong> ou scannez → entrez le montant → PIN.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- CAC PAY -->
+          <div class="plaque reveal">
+            <div class="plaque__stripe" style="background:#1A3C8F;"></div>
+            <div class="plaque__body">
+              <div class="plaque__qr-zone">
+                <img src="images/paiement/cacpay-qr.jpg" alt="QR Code CAC Pay" class="plaque__qr">
+                <span class="plaque__scan-lbl">Scanner pour payer</span>
+              </div>
+              <div class="plaque__info">
+                <div class="plaque__brand">
+                  <div class="plaque__brand-dot" style="background:#1A3C8F;"></div>
+                  <div>
+                    <div class="plaque__brand-name">CAC Pay</div>
+                    <span class="plaque__brand-sub">CAC International Bank · Banki</span>
+                  </div>
+                </div>
+                <div class="plaque__code-row">
+                  <div>
+                    <div class="plaque__code-val">72401</div>
+                    <div class="plaque__code-lbl">Code commerçant</div>
+                  </div>
+                </div>
+                <p class="plaque__instruction">Ouvrez Banki → <strong>Paiement marchand</strong> → saisissez <strong>72401</strong> → montant → confirmer.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- WAAFI -->
+          <div class="plaque reveal">
+            <div class="plaque__stripe" style="background:#0A5EA8;"></div>
+            <div class="plaque__body">
+              <div class="plaque__qr-zone">
+                <img src="images/paiement/waafi-qr.jpg" alt="QR Code WAAFI" class="plaque__qr">
+                <span class="plaque__scan-lbl">Scanner pour payer</span>
+              </div>
+              <div class="plaque__info">
+                <div class="plaque__brand">
+                  <div class="plaque__brand-dot" style="background:#0A5EA8;"></div>
+                  <div>
+                    <div class="plaque__brand-name">WAAFI</div>
+                    <span class="plaque__brand-sub">Mobile Money</span>
+                  </div>
+                </div>
+                <div class="plaque__code-row">
+                  <div>
+                    <div class="plaque__code-val">2823</div>
+                    <div class="plaque__code-lbl">Code caisse</div>
+                  </div>
+                </div>
+                <p class="plaque__instruction">Ouvrez WAAFI → <strong>Payer un marchand</strong> → saisissez <strong>2823</strong> → montant → PIN WAAFI.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- EXIM BANK -->
+          <div class="plaque reveal">
+            <div class="plaque__stripe" style="background:#2D2D7A;"></div>
+            <div class="plaque__body">
+              <div class="plaque__qr-zone">
+                <img src="images/paiement/exim-qr.jpg" alt="QR Code EXIM Bank Pay" class="plaque__qr">
+                <span class="plaque__scan-lbl">Scanner pour payer</span>
+              </div>
+              <div class="plaque__info">
+                <div class="plaque__brand">
+                  <div class="plaque__brand-dot" style="background:#2D2D7A;"></div>
+                  <div>
+                    <div class="plaque__brand-name">EXIM Pay</div>
+                    <span class="plaque__brand-sub">EXIM Bank · Innovation is life</span>
+                  </div>
+                </div>
+                <div class="plaque__code-row">
+                  <div>
+                    <div class="plaque__code-val">322332</div>
+                    <div class="plaque__code-lbl">Code marchand</div>
+                  </div>
+                </div>
+                <p class="plaque__instruction">Ouvrez EXIM Pay → <strong>Paiement</strong> → saisissez <strong>322332</strong> ou scannez → montant → valider.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- SABA PAY -->
+          <div class="plaque reveal">
+            <div class="plaque__stripe" style="background:#0077B6;"></div>
+            <div class="plaque__body">
+              <div class="plaque__qr-zone">
+                <img src="images/paiement/sabapay-qr.jpg" alt="QR Code Saba Pay" class="plaque__qr">
+                <span class="plaque__scan-lbl">Scanner pour payer</span>
+              </div>
+              <div class="plaque__info">
+                <div class="plaque__brand">
+                  <div class="plaque__brand-dot" style="background:#0077B6;"></div>
+                  <div>
+                    <div class="plaque__brand-name">Saba Pay</div>
+                    <span class="plaque__brand-sub">Saba Mobile · Saba African Bank</span>
+                  </div>
+                </div>
+                <div class="plaque__code-row">
+                  <div>
+                    <div class="plaque__code-val">6888-1</div>
+                    <div class="plaque__code-lbl">Code caisse</div>
+                  </div>
+                </div>
+                <p class="plaque__instruction">Ouvrez Saba Pay → <strong>Payer</strong> → saisissez <strong>6888-1</strong> ou scannez → montant → confirmer.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- fin colonnes -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== BANNIÈRE CONFIRMATION ======== -->
+  <section class="section section--cream2" style="padding-block: clamp(40px,6vw,72px);">
+    <div class="container">
+      <div class="confirm-banner reveal">
+
+        <div class="confirm-banner__step">
+          <div class="confirm-banner__num">1</div>
+          <div class="confirm-banner__txt">
+            <strong>Payez électroniquement</strong>
+            <span>Depuis D-Money, CAC Pay, WAAFI, EXIM ou Saba Pay — en 30 secondes, sans vous déplacer.</span>
+          </div>
+        </div>
+
+        <div class="confirm-banner__step">
+          <div class="confirm-banner__num">2</div>
+          <div class="confirm-banner__txt">
+            <strong>Reçu de paiement instantané</strong>
+            <span>Votre application vous envoie automatiquement un <strong style="color:var(--gold);">SMS de confirmation</strong> dès que le paiement est validé.</span>
+          </div>
+        </div>
+
+        <div class="confirm-banner__step">
+          <div class="confirm-banner__num">3</div>
+          <div class="confirm-banner__txt">
+            <strong>Confirmation RDV par WhatsApp</strong>
+            <span>La clinique vous confirme votre rendez-vous sur <strong style="color:var(--gold);">WhatsApp</strong> avec la date, l'heure et le nom du médecin.</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== NOTE ======== -->
+  <section class="section" style="padding-block: clamp(32px,4vw,56px);">
+    <div class="container container-narrow">
+      <div class="card reveal" style="border-left: 4px solid var(--olive); border-radius: var(--radius);">
+        <p style="color:var(--ink-soft);font-size:.96rem;">
+          <strong style="color:var(--olive-deep);">Besoin d'aide ?</strong> Notre équipe est disponible pour vous accompagner lors de votre premier paiement électronique.
+          Appelez le <a href="tel:+25321350707" style="color:var(--olive);font-weight:700;">21 35 07 07</a> ou écrivez-nous sur
+          <a href="https://wa.me/25377081717" style="color:#1FA855;font-weight:700;">WhatsApp (+253 77 08 17 17)</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ======== FOOTER ======== -->
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="index.html">
+            <img src="images/logo-clinique-pasteur.jpg" alt="Clinique Pasteur" class="brand__logo" style="filter:brightness(0) invert(1);">
+          </a>
+          <p>Cabinet d'ophtalmologie du Dr Issa Bogoreh. Des soins oculaires d'excellence, au cœur de Djibouti.</p>
+        </div>
+        <div>
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="cabinet.html">Le Cabinet</a></li>
+            <li><a href="soins.html">Nos Soins</a></li>
+            <li><a href="medecin.html">Le Médecin</a></li>
+            <li><a href="engagement.html">Engagement</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="paiement.html">Paiement</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Paiement accepté</h4>
+          <ul class="footer-links">
+            <li><a href="paiement.html">D-Money · 3155</a></li>
+            <li><a href="paiement.html">CAC Pay · 72401</a></li>
+            <li><a href="paiement.html">WAAFI · 2823</a></li>
+            <li><a href="paiement.html">EXIM Pay · 322332</a></li>
+            <li><a href="paiement.html">Saba Pay · 6888-1</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="footer-contact">
+            <li><svg viewBox="0 0 24 24"><path d="M12 21s-7-5-7-11a7 7 0 0 1 14 0c0 6-7 11-7 11z" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.5"/></svg><span>Gabode 3, lot 5 — Près du Lycée Ilyes,<br>en face du tennis · B.P 386 · Djibouti</span></li>
+            <li><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" stroke-linejoin="round"/></svg><span><a href="tel:+25321350707">+253 21 35 07 07</a> · <a href="tel:+25377081717">77 08 17 17</a></span></li>
+            <li><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span><a href="mailto:agendapasteur21@gmail.com">agendapasteur21@gmail.com</a></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <span>© 2026 Clinique Pasteur — Cabinet du Dr Issa Bogoreh. Tous droits réservés.</span>
+      <span>Djibouti · Corne de l'Afrique</span>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/25377081717" target="_blank" rel="noopener" aria-label="Contacter par WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M.06 24l1.7-6.2A11.9 11.9 0 1 1 12 24a12 12 0 0 1-5.74-1.47L.06 24zM6.6 20.1l.36.21a9.9 9.9 0 1 0-3.4-3.4l.23.37-1 3.66 3.81-.84zM17.5 14.3c-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.93-1.19-.71-.64-1.19-1.42-1.33-1.66-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.39-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.16 1.69 2.58 4.1 3.62.57.25 1.02.4 1.37.51.57.18 1.1.16 1.51.1.46-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28z"/></svg>
+</a>
+
+<script src="js/site.js"></script>
+</body>
+</html>

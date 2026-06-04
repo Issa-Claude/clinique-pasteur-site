@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engagement & Actions — Dr Issa Bogoreh · Clinique Pasteur · Djibouti</title>
+<meta name="description" content="Actions humanitaires du Dr Issa Bogoreh : Past Président du Lions Club Djibouti, caravane ophtalmo avec le Ministère de la Santé et la Banque Islamique de Développement.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  /* ---- Galerie photos ---- */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: clamp(28px, 4vw, 48px);
+  }
+  @media (max-width: 900px) { .gallery { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 600px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+
+  .gallery__item {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius);
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    background: var(--cream-2);
+  }
+  .gallery__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .5s ease;
+  }
+  .gallery__item:hover img { transform: scale(1.06); }
+
+  /* Grande photo — une image en vedette */
+  .gallery__item--wide {
+    grid-column: span 2;
+    aspect-ratio: 2 / 1;
+  }
+
+  /* ---- Lightbox ---- */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.88);
+    z-index: 200;
+    place-items: center;
+  }
+  .lightbox.open { display: grid; }
+  .lightbox img {
+    max-width: 92vw;
+    max-height: 88vh;
+    object-fit: contain;
+    border-radius: var(--radius);
+    box-shadow: 0 32px 80px rgba(0,0,0,.6);
+  }
+  .lightbox__close {
+    position: fixed;
+    top: 18px; right: 22px;
+    background: none; border: none;
+    color: #fff; font-size: 2.2rem;
+    cursor: pointer; line-height: 1;
+    z-index: 201;
+  }
+  .lightbox__prev, .lightbox__next {
+    position: fixed;
+    top: 50%; transform: translateY(-50%);
+    background: rgba(255,255,255,.12);
+    border: 1.5px solid rgba(255,255,255,.25);
+    color: #fff; font-size: 1.6rem;
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: grid; place-items: center;
+    z-index: 201;
+    transition: background .2s;
+  }
+  .lightbox__prev:hover, .lightbox__next:hover { background: rgba(255,255,255,.25); }
+  .lightbox__prev { left: 16px; }
+  .lightbox__next { right: 16px; }
+
+  /* ---- Badge engagement ---- */
+  .engage-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .7rem;
+    background: var(--white);
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: .9rem 1.3rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.6rem;
+  }
+  .engage-badge__icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+  .engage-badge__txt strong { display: block; color: var(--olive-deep); font-size: 1rem; }
+  .engage-badge__txt span  { font-size: .88rem; color: var(--ink-soft); }
+
+  /* ---- Section titre avec ligne ---- */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: clamp(28px,4vw,48px);
+  }
+  .section-divider h2 { margin: 0; white-space: nowrap; }
+  .section-divider::after {
+    content: "";
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, var(--line), transparent);
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Aller au contenu</a>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <div class="container">
+    <nav class="nav" data-open="false" aria-label="Navigation principale">
+      <a class="brand" href="index.html" aria-label="Clinique Pasteur — accueil">
+        <img src="images/logo-clinique-pasteur.jpg" alt="Clinique Pasteur" class="brand__logo">
+      </a>
+      <button class="nav__toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <div class="nav__drawer" id="menu">
+        <ul class="nav__links">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="cabinet.html">Le Cabinet</a></li>
+          <li><a href="soins.html">Nos Soins</a></li>
+          <li><a href="medecin.html">Le Médecin</a></li>
+          <li><a href="engagement.html" aria-current="page">Engagement</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav__cta">
+          <a class="btn btn--primary" href="contact.html">Prendre rendez-vous</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ BANNER ============ -->
+  <div class="banner">
+    <div class="container">
+      <div class="banner__inner">
+        <nav class="breadcrumb" aria-label="Fil d'Ariane">
+          <a href="index.html">Accueil</a> &rsaquo; Engagement & Actions
+        </nav>
+        <span class="kicker">Au-delà du cabinet</span>
+        <h1>Engagement & Actions humanitaires</h1>
+        <p>Le Dr Issa Bogoreh s'investit au-delà de son cabinet pour rendre les soins ophtalmologiques accessibles à tous — à travers le Lions Club Djibouti et des campagnes en partenariat avec le Ministère de la Santé.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ INTRO BADGES ============ -->
+  <section class="section" style="padding-bottom: 0;">
+    <div class="container">
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:clamp(32px,5vw,64px);">
+
+        <div class="engage-badge">
+          <div class="engage-badge__icon" style="background:#FFF3CD;">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.5l-4.8 2.4.9-5.4L4.2 7.7l5.4-.8z"/>
+            </svg>
+          </div>
+          <div class="engage-badge__txt">
+            <strong>Past Président — Lions Club Djibouti</strong>
+            <span>Membre actif, actions humanitaires en ophtalmologie</span>
+          </div>
+        </div>
+
+        <div class="engage-badge">
+          <div class="engage-badge__icon" style="background:#E8F5E9;">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#5CB85C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-2 5 5 0 0 1 9 2c-2 4.5-9 9-9 9z"/>
+            </svg>
+          </div>
+          <div class="engage-badge__txt">
+            <strong>Partenariat Ministère de la Santé</strong>
+            <span>Caravane ophtalmo — Dépistage & chirurgie gratuits</span>
+          </div>
+        </div>
+
+        <div class="engage-badge">
+          <div class="engage-badge__icon" style="background:#E3F2FD;">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#1565C0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2"/>
+              <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+            </svg>
+          </div>
+          <div class="engage-badge__txt">
+            <strong>Banque Islamique de Développement (BID)</strong>
+            <span>Collaboration sur les programmes de santé oculaire</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION CARAVANE ============ -->
+  <section class="section">
+    <div class="container">
+
+      <div class="section-divider reveal">
+        <h2>Caravane ophtalmologique</h2>
+      </div>
+
+      <div class="split reveal" style="margin-bottom: clamp(32px,5vw,60px);">
+        <div class="split__content">
+          <span class="kicker">Ministère de la Santé · BID</span>
+          <h3 style="margin-top:.5rem;">Soins gratuits pour les populations vulnérables</h3>
+          <p style="margin-top:1rem;color:var(--ink-soft);">En collaboration avec le Ministère de la Santé de Djibouti et la Banque Islamique de Développement, le Dr Issa Bogoreh participe à des caravanes médicales itinérantes offrant des consultations ophtalmologiques gratuites, des dépistages et des opérations de la cataracte aux populations les plus éloignées des centres de soins.</p>
+          <ul class="flist" style="margin-top:1.4rem;">
+            <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Consultations et dépistages gratuits sur le terrain</span></li>
+            <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Chirurgie de la cataracte pour les patients démunis</span></li>
+            <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Distribution de lunettes et de traitements</span></li>
+            <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Sensibilisation à la santé oculaire dans les régions</span></li>
+          </ul>
+        </div>
+        <div class="split__media">
+          <img src="images/engagement/caravane/caravane-1.jpg" alt="Dr Issa Bogoreh — Remise de certificat, caravane ophtalmologique" style="width:100%;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);">
+        </div>
+      </div>
+
+      <!-- Galerie caravane -->
+      <div class="gallery reveal">
+        <div class="gallery__item gallery__item--wide" onclick="openLightbox('caravane',1)">
+          <img src="images/engagement/caravane/caravane-2.jpeg" alt="Caravane ophtalmo — Ministère de la Santé et BID">
+        </div>
+        <div class="gallery__item" onclick="openLightbox('caravane',2)">
+          <img src="images/engagement/caravane/caravane-3.jpeg" alt="Caravane ophtalmo Djibouti">
+        </div>
+        <div class="gallery__item" onclick="openLightbox('caravane',3)">
+          <img src="images/engagement/caravane/caravane-4.jpeg" alt="Caravane ophtalmo Djibouti">
+        </div>
+        <div class="gallery__item" onclick="openLightbox('caravane',4)">
+          <img src="images/engagement/caravane/caravane-5.jpeg" alt="Caravane ophtalmo Djibouti">
+        </div>
+        <div class="gallery__item" onclick="openLightbox('caravane',5)">
+          <img src="images/engagement/caravane/caravane-6.jpeg" alt="Caravane ophtalmo Djibouti">
+        </div>
+        <div class="gallery__item gallery__item--wide" onclick="openLightbox('caravane',6)">
+          <img src="images/engagement/caravane/caravane-7.jpeg" alt="Caravane ophtalmo Djibouti">
+        </div>
+        <div class="gallery__item" onclick="openLightbox('caravane',7)">
+          <img src="images/engagement/caravane/caravane-8.jpeg" alt="Caravane ophtalmo Djibouti">
+        </div>
+        <div class="gallery__item" onclick="openLightbox('caravane',8)">
+          <img src="images/engagement/caravane/caravane-9.jpeg" alt="Caravane ophtalmo Djibouti">
+        </div>
+        <div class="gallery__item" onclick="openLightbox('caravane',9)">
+          <img src="images/engagement/caravane/caravane-10.jpeg" alt="Caravane ophtalmo Djibouti">
+        </div>
+        <div class="gallery__item" onclick="openLightbox('caravane',10)">
+          <img src="images/engagement/caravane/caravane-11.jpeg" alt="Caravane ophtalmo Djibouti">
+        </div>
+        <div class="gallery__item gallery__item--wide" onclick="openLightbox('caravane',11)">
+          <img src="images/engagement/caravane/caravane-12.jpeg" alt="Caravane ophtalmo Djibouti">
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ SECTION LIONS CLUB ============ -->
+  <section class="section section--cream2">
+    <div class="container">
+
+      <div class="section-divider reveal">
+        <h2>Lions Club Djibouti</h2>
+      </div>
+
+      <div class="split split--reverse reveal" style="margin-bottom: clamp(32px,5vw,60px);">
+        <div class="split__content">
+          <span class="kicker">Past Président · Membre actif</span>
+          <h3 style="margin-top:.5rem;">Servir, sans jamais attendre en retour</h3>
+          <p style="margin-top:1rem;color:var(--ink-soft);">Le Dr Issa Bogoreh est membre engagé du Lions Club de Djibouti, dont il a assumé la présidence. À ce titre, il organise et participe à des missions humanitaires ophtalmologiques : opérations de la cataracte gratuites, distribution de lunettes, et campagnes de sensibilisation auprès des populations défavorisées de Djibouti et des régions environnantes.</p>
+          <ul class="flist" style="margin-top:1.4rem;">
+            <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong>Past Président</strong> du Lions Club de Djibouti</span></li>
+            <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Missions de chirurgie de la cataracte gratuites</span></li>
+            <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Distribution de lunettes aux personnes démunies</span></li>
+            <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Actions de sensibilisation dans les écoles et quartiers</span></li>
+          </ul>
+        </div>
+        <div class="split__media">
+          <img src="images/engagement/lions-club/lions-1.jpg" alt="Lions Club Djibouti — Mission ophtalmologique" style="width:100%;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);">
+        </div>
+      </div>
+
+      <!-- Galerie Lions Club -->
+      <div class="gallery reveal">
+        <div class="gallery__item gallery__item--wide" onclick="openLightbox('lions',0)">
+          <img src="images/engagement/lions-club/lions-2.jpg" alt="Lions Club Djibouti — Action humanitaire">
+        </div>
+        <div class="gallery__item" onclick="openLightbox('lions',1)">
+          <img src="images/engagement/lions-club/lions-3.JPG" alt="Lions Club Djibouti">
+        </div>
+        <div class="gallery__item" onclick="openLightbox('lions',2)">
+          <img src="images/engagement/lions-club/lions-4.JPG" alt="Lions Club Djibouti">
+        </div>
+        <div class="gallery__item gallery__item--wide" onclick="openLightbox('lions',3)">
+          <img src="images/engagement/lions-club/lions-5.JPG" alt="Lions Club Djibouti — Mission ophtalmo">
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="section" style="padding-block: clamp(40px,6vw,72px);">
+    <div class="container">
+      <div class="cta-band reveal">
+        <h2>Prenez rendez-vous</h2>
+        <p>Pour une consultation ou une urgence ophtalmologique, le Dr Bogoreh et son équipe vous accueillent du samedi au jeudi.</p>
+        <div class="actions">
+          <a class="btn btn--light" href="contact.html">Formulaire de contact</a>
+          <a class="btn btn--wa" href="https://wa.me/25377081717" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M.06 24l1.7-6.2A11.9 11.9 0 1 1 12 24a12 12 0 0 1-5.74-1.47L.06 24zM6.6 20.1l.36.21a9.9 9.9 0 1 0-3.4-3.4l.23.37-1 3.66 3.81-.84zM17.5 14.3c-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.93-1.19-.71-.64-1.19-1.42-1.33-1.66-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.39-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.16 1.69 2.58 4.1 3.62.57.25 1.02.4 1.37.51.57.18 1.1.16 1.51.1.46-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Visionneuse de photos">
+  <button class="lightbox__close" onclick="closeLightbox()" aria-label="Fermer">×</button>
+  <button class="lightbox__prev" onclick="moveLightbox(-1)" aria-label="Photo précédente">&#8249;</button>
+  <img id="lightbox-img" src="" alt="">
+  <button class="lightbox__next" onclick="moveLightbox(1)" aria-label="Photo suivante">&#8250;</button>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="index.html">
+            <img src="images/logo-clinique-pasteur.jpg" alt="Clinique Pasteur" class="brand__logo" style="filter:brightness(0) invert(1);">
+          </a>
+          <p>Cabinet d'ophtalmologie du Dr Issa Bogoreh. Des soins oculaires d'excellence, au cœur de Djibouti.</p>
+        </div>
+        <div>
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="cabinet.html">Le Cabinet</a></li>
+            <li><a href="soins.html">Nos Soins</a></li>
+            <li><a href="medecin.html">Le Médecin</a></li>
+            <li><a href="engagement.html">Engagement</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Engagement</h4>
+          <ul class="footer-links">
+            <li><a href="engagement.html">Lions Club Djibouti</a></li>
+            <li><a href="engagement.html">Caravane Ministère Santé</a></li>
+            <li><a href="engagement.html">Partenariat BID</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="footer-contact">
+            <li><svg viewBox="0 0 24 24"><path d="M12 21s-7-5-7-11a7 7 0 0 1 14 0c0 6-7 11-7 11z" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.5"/></svg><span>Gabode 3, lot 5 — Près du Lycée Ilyes,<br>en face du tennis · B.P 386 · Djibouti</span></li>
+            <li><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" stroke-linejoin="round"/></svg><span><a href="tel:+25321350707">+253 21 35 07 07</a> · <a href="tel:+25377081717">77 08 17 17</a></span></li>
+            <li><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span><a href="mailto:agendapasteur21@gmail.com">agendapasteur21@gmail.com</a></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <span>© 2026 Clinique Pasteur — Cabinet du Dr Issa Bogoreh. Tous droits réservés.</span>
+      <span>Djibouti · Corne de l'Afrique</span>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/25377081717" target="_blank" rel="noopener" aria-label="Contacter par WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M.06 24l1.7-6.2A11.9 11.9 0 1 1 12 24a12 12 0 0 1-5.74-1.47L.06 24zM6.6 20.1l.36.21a9.9 9.9 0 1 0-3.4-3.4l.23.37-1 3.66 3.81-.84zM17.5 14.3c-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.93-1.19-.71-.64-1.19-1.42-1.33-1.66-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.39-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.16 1.69 2.58 4.1 3.62.57.25 1.02.4 1.37.51.57.18 1.1.16 1.51.1.46-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28z"/></svg>
+</a>
+
+<script src="js/site.js"></script>
+<script>
+// ---- Lightbox ----
+const galleries = {
+  caravane: [
+    'images/engagement/caravane/caravane-1.jpg',
+    'images/engagement/caravane/caravane-2.jpeg',
+    'images/engagement/caravane/caravane-3.jpeg',
+    'images/engagement/caravane/caravane-4.jpeg',
+    'images/engagement/caravane/caravane-5.jpeg',
+    'images/engagement/caravane/caravane-6.jpeg',
+    'images/engagement/caravane/caravane-7.jpeg',
+    'images/engagement/caravane/caravane-8.jpeg',
+    'images/engagement/caravane/caravane-9.jpeg',
+    'images/engagement/caravane/caravane-10.jpeg',
+    'images/engagement/caravane/caravane-11.jpeg',
+    'images/engagement/caravane/caravane-12.jpeg'
+  ],
+  lions: [
+    'images/engagement/lions-club/lions-1.jpg',
+    'images/engagement/lions-club/lions-2.jpg',
+    'images/engagement/lions-club/lions-3.JPG',
+    'images/engagement/lions-club/lions-4.JPG',
+    'images/engagement/lions-club/lions-5.JPG'
+  ]
+};
+
+let currentGallery = 'caravane';
+let currentIndex   = 0;
+
+function openLightbox(gallery, index) {
+  currentGallery = gallery;
+  currentIndex   = index;
+  document.getElementById('lightbox-img').src = galleries[gallery][index];
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function moveLightbox(dir) {
+  const imgs = galleries[currentGallery];
+  currentIndex = (currentIndex + dir + imgs.length) % imgs.length;
+  document.getElementById('lightbox-img').src = imgs[currentIndex];
+}
+
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) closeLightbox();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape')      closeLightbox();
+  if (e.key === 'ArrowLeft')   moveLightbox(-1);
+  if (e.key === 'ArrowRight')  moveLightbox(1);
+});
+</script>
+</body>
+</html>
