@@ -5,7 +5,12 @@
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(git push *)",
-      "Bash(code \"C:\\\\Users\\\\Halgan\\\\Desktop\\\\MARJANE.code-workspace\")"
+      "Bash(code \"C:\\\\Users\\\\Halgan\\\\Desktop\\\\MARJANE.code-workspace\")",
+      "Bash(Start-Process \"C:\\\\Users\\\\Halgan\\\\Desktop\\\\MARJANE.code-workspace\")",
+      "PowerShell(Start-Process \"C:\\\\Users\\\\Halgan\\\\Desktop\\\\MARJANE.code-workspace\")",
+      "PowerShell(Get-Command code 2>$null; \\(Get-ChildItem \"C:\\\\Users\\\\Halgan\\\\AppData\\\\Local\\\\Programs\\\\Microsoft VS Code\\\\Code.exe\" -ErrorAction SilentlyContinue\\).FullName)",
+      "PowerShell(& \"C:\\\\Users\\\\Halgan\\\\AppData\\\\Local\\\\Programs\\\\Microsoft VS Code\\\\Code.exe\" \"C:\\\\Users\\\\Halgan\\\\Desktop\\\\MARJANE.code-workspace\")",
+      "PowerShell(& \"C:\\\\Users\\\\Halgan\\\\AppData\\\\Local\\\\Programs\\\\Microsoft VS Code\\\\bin\\\\code.cmd\" \"C:\\\\Users\\\\Halgan\\\\Desktop\\\\MARJANE.code-workspace\")"
     ],
     "additionalDirectories": [
       "C:\\Users\\Halgan\\Desktop"
